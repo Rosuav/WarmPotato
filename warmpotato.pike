@@ -16,6 +16,13 @@ void sighup()
 	G->parse_config();
 }
 
+void accept(Protocols.HTTP.Server.Request req)
+{
+	mapping config=G->config;
+	catch {config->request(config,req);}; //TODO: Handle exceptions... somehow.
+	//Or alternatively: Thread.Thread(config->request,config,req);
+}
+
 int main(int argc,array(string) argv)
 {
 	add_constant("G",this);
@@ -24,5 +31,7 @@ int main(int argc,array(string) argv)
 	G->configfile=sizeof(arg[Arg.REST]) ? arg[Arg.REST][0] : "warmpotato.conf";
 	sighup(); signal(1,sighup);
 	if (!G->config) return 1; //Initialization failure
+	G->mainsock=Protocols.HTTP.Server.Port(accept,G->config->listen_port || 80,G->config->bind_address || "::");
+	write("Server active.\n");
 	return -1;
 }
