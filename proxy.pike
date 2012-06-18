@@ -4,7 +4,7 @@ string host; //Note: The host is used as-is for every request. DNS is not cached
 int port;
 
 //Initialize a site based on the given parameters. If anything goes wrong, throw an error.
-void create(string params)
+void create(mapping config,string params)
 {
 	sscanf(params,"%s:%d",host,port);
 	if (!port) error("Usage: proxy:host:port");

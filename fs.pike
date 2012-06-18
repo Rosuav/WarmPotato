@@ -28,7 +28,7 @@ class cached
 }
 
 //Initialize a site based on the given parameters. If anything goes wrong, throw an error.
-void create(string params)
+void create(mapping config,string params)
 {
 	if (!file_stat(basepath=params)) error("Path not found: "+params);
 }

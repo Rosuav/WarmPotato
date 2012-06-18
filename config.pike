@@ -26,7 +26,7 @@ void parse_config()
 			//TODO: compile_file can throw errors, which currently look a tad ugly. Make it a little more helpful.
 			if (!code[cls] && !(code[cls]=compile_file(cls+".pike"))) {werror("Unrecognized class '%s' in web_sites element %d in config file %s\n",cls,i,configfile); return;}
 			sscanf(method,"%s %s",method,string methodargs);
-			sites[i]=({method,methodargs||"",code[cls](params)});
+			sites[i]=({method,methodargs||"",code[cls](config,params)});
 		}
 		config->request=request;
 		G->G->config=config; //Atomically apply the configuration changes. Everything will either continue with the old or take the new.
