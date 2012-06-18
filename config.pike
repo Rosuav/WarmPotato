@@ -35,17 +35,20 @@ void parse_config()
 
 void request(mapping config,Protocols.HTTP.Server.Request req)
 {
-	foreach (config->web_sites,array site)
+	if (mixed ex=catch
 	{
-		//site[0] is the method, site[1] method args, site[2] the handler object
-		//If not matched, 'continue'.
-		switch (site[0])
+		foreach (config->web_sites,array site)
 		{
-			case "*": break; //Always matches.
-			case "host": if (lower_case(req->request_headers["host"])==lower_case(site[1])) break; else continue; //TODO: Lowercase the parameter once.
-			default: continue;
+			//site[0] is the method, site[1] method args, site[2] the handler object
+			//If not matched, 'continue'.
+			switch (site[0])
+			{
+				case "*": break; //Always matches.
+				case "host": if (lower_case(req->request_headers["host"])==lower_case(site[1])) break; else continue; //TODO: Lowercase the parameter once.
+				default: continue;
+			}
+			site[2]->request(config,req);
+			return;
 		}
-		site[2]->request(config,req);
-		return;
-	}
+	}) req->response_and_finish((["extra_heads":(["content-type":"text/plain"]),"data":arrayp(ex)?ex[0]+"\n"+describe_backtrace(get_backtrace(ex)):sprintf("%O",ex)])); //TODO: Make it configurable where these go. It's a security hole to let them go to the page, but I don't currently have a suitable log.
 }
