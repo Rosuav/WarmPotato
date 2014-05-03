@@ -3,11 +3,6 @@ WarmPotato
 
 Simple HTTP server with multi-host facilities and atomic updates.
 
-CAUTION: This project is still in the toy/alpha phase. It is not intended for
-high-performance web sites, and probably will not scale well. But I do mean
-eventually for WarmPotato to be able to scale as far as a single computer can
-go (haven't considered scaling out at this stage).
-
 Concept
 =======
 
@@ -21,6 +16,13 @@ Compared to a typical Apache + PHP web server, this guarantees that you can't
 half-update a web site (for instance, somepage.php includes common.php and
 you make a parallel change to both - it's possible, while you're copying the
 files over, to have the old somepage read the new common or vice versa).
+
+
+Note that this project was never intended to be of serious value, and has been
+quite successful as an exploratory tool. It's probably never going to become a
+viable web server, but it's a handy place to try things out quickly. Scaling
+to multiple CPU cores, improving requests-per-second throughput, etc, have
+never been on the horizon. It's still a fun toy, though.
 
 License
 =======
